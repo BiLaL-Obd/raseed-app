@@ -297,6 +297,23 @@ details.help[open] summary:after{transform:rotate(180deg)}
 .ios-hint{display:flex;gap:10px;align-items:center;background:color-mix(in srgb,var(--primary2) 14%,var(--card));border:1px solid color-mix(in srgb,var(--primary2) 40%,var(--line));border-radius:16px;padding:11px 12px;margin-bottom:12px;font-weight:700;font-size:13px;line-height:1.6}
 .ios-hint svg{width:22px;height:22px;flex:none;color:var(--primary2)}
 .ios-hint button{margin-inline-start:auto;color:var(--muted);font-size:18px;padding:0 4px}
+[dir=rtl] .f input[type=tel],[dir=rtl] .f input[name=login],[dir=rtl] .f input[name=target],[dir=rtl] .f input[name=phone],[dir=rtl] .f input[name=bizPhone]{direction:ltr;text-align:right}
+[dir=rtl] .f input:placeholder-shown{direction:rtl}
+.f input::placeholder,.f textarea::placeholder{color:var(--muted);opacity:.75;font-weight:600}
+.pk{display:block;width:100%;text-align:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 13px;margin-bottom:10px;position:relative;overflow:hidden}
+.pk:before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:4px;background:var(--pc)}
+.pk .hd{display:flex;align-items:center;gap:10px}
+.pk .nm{font-weight:800;font-size:15px}
+.pk .ln{font-size:12.5px;color:var(--muted);font-weight:700}
+.pk .ppl{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.pk .ppl span{font-size:11.5px;font-weight:700;background:var(--card2);border-radius:9px;padding:3px 8px}
+.pk .ppl span.free{background:none;border:1.5px dashed var(--line);color:var(--muted)}
+.pk .ppl span.end{color:var(--warn)}
+.pk .meter{display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-top:9px;color:var(--muted)}
+.pk-grp{font-size:13px;font-weight:800;color:var(--muted);margin:4px 2px 8px;display:flex;align-items:center;gap:6px}
+.pk-grp i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.pk-info{margin:-4px 2px 12px;font-size:13px;font-weight:800;line-height:1.7;padding:8px 11px;border-radius:12px;background:var(--card2)}
+.pk-info.ok{color:var(--ok)}.pk-info.bad{color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--card2))}
 .note{background:color-mix(in srgb,var(--primary) 10%,transparent);border-radius:13px;padding:10px 12px;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:12px}
 @media (min-width:700px){ .sheet{border-radius:26px;bottom:20px} .notes{columns:3} }
 [dir=rtl] .hero .big,[dir=rtl] .hero .pill b,[dir=rtl] .stat b.ltr,[dir=rtl] .kpi b.ltr,[dir=rtl] .sec2{text-align:right}
@@ -375,7 +392,9 @@ const I=(n,extra='')=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor
 
 /* ============ I18N ============ */
 const L={
-ar:{cleanup:'تنظيف البيانات القديمة',m_clean:'حذف القديم وإبقاء الرصيد',cleanIntro:'احذف البيانات القديمة لتخفيف التطبيق. رصيدك يبقى كما هو: مجموع الحركات المحذوفة يُحفظ في حركة واحدة اسمها «رصيد مُرحّل».',olderThan:'أقدم من',mo3:'3 أشهر',mo6:'6 أشهر',mo12:'سنة',mo24:'سنتين',
+ar:{pkOk:'✅ مسموح إضافة {n} بعد ({u}/{m})',pkFullNow:'⛔ الباقة ممتلئة ({u}/{m}) — لا يمكن إضافة رقم آخر',pkNoLimit:'👥 {u} مستخدمين — بدون حد',pkGB:'باقي {v}',pkQtyOver:'⚠️ الكمية أكبر من المتبقي ({v})',pkSel:'الباقة الرئيسية (الخط / الحساب)',noPk:'بدون باقة رئيسية',newPk:'+ باقة رئيسية جديدة',pkFullBlock:'الباقة ممتلئة ({u}/{m}). اختر باقة أخرى، أو زِد «عدد الأشخاص المسموح» من تعديل الباقة.',pkCapBlock:'المتبقي في الباقة {v} فقط. قلّل الكمية أو اختر باقة أخرى.',mainPk:'الباقات الرئيسية',noAccHint:'أضف باقة رئيسية (خط Ushare أو حساب Netflix) لترى رقمها ومستخدميها هنا.',addAcc:'إضافة باقة',slots:'عدد الأشخاص المسموح',slotsHint:'Ushare عادة 3 أو 4 أرقام، Netflix عادة 5 بروفايلات. اتركه فارغاً إذا لا يوجد حد.',mainLine:'رقم الخط الرئيسي / الإيميل',target:'الرقم المستلم / البروفايل',targetPh:'رقم أو اسم بروفايل',members:'المستخدمون',free:'{n} مكان فارغ',full:'ممتلئ',overCap:'تجاوز السعة',leftGB:'باقي {v}',accFullWarn:'تنبيه: هذا الحساب ممتلئ ({u}/{m})',accCapWarn:'تنبيه: الكمية أكبر من المتبقي في الحساب ({v})',msgMembers:'مراسلة المستخدمين',
+accExpAlert2:'{svc} «{acc}» {line}— {when} · {n} مستخدمين',accFullAlert:'{svc} «{acc}» ممتلئ ({u}/{m})',accOverAlert:'{svc} «{acc}»: موزّع {u} من أصل {c}',memberAlert:'{name} ({target}) — {svc} — {when}',
+cards:'كروت التشريج',addCards:'إضافة كروت تشريج',cardsIntro:'اختر ما تبيعه ليُضاف كمنتجات، ثم ضع السعر والكمية لكل واحد.',c_alfa:'كرت ألفا',c_mtc:'كرت تاتش (MTC)',c_alfaUSD:'تحويل دولارات ألفا',c_mtcUSD:'تحويل دولارات تاتش (MTC)',c_alfaDays:'تشريج أيام ألفا',c_mtcDays:'تشريج أيام تاتش (MTC)',denom:'الفئة (اختياري)',denomPh:'مثلاً $7.58 أو 22$',addSel:'إضافة المحدّد',added:'تمت الإضافة ✓',cleanup:'تنظيف البيانات القديمة',m_clean:'حذف القديم وإبقاء الرصيد',cleanIntro:'احذف البيانات القديمة لتخفيف التطبيق. رصيدك يبقى كما هو: مجموع الحركات المحذوفة يُحفظ في حركة واحدة اسمها «رصيد مُرحّل».',olderThan:'أقدم من',mo3:'3 أشهر',mo6:'6 أشهر',mo12:'سنة',mo24:'سنتين',
 cl_subs:'الاشتراكات المنتهية والمدفوعة',cl_tx:'الحركات المالية',cl_acc:'الحسابات المنتهية',cl_notes:'الملاحظات القديمة (غير المثبّتة)',cl_cust:'الزبائن بدون أي اشتراك',cl_keep:'لا يُحذف أبداً: الاشتراكات التي عليها دين، ودفعات الاشتراكات الباقية.',cl_preview:'سيُحذف',cl_none:'لا توجد بيانات قديمة بهذه الشروط',cl_do:'احذف الآن',cl_backupFirst:'احفظ نسخة احتياطية أولاً',cl_done:'تم التنظيف ✓',cl_undo:'تراجع عن آخر تنظيف',cl_partner:'إذا كنت تدمج مع شريك، ستُحذف هذه البيانات عنده أيضاً عند الدمج القادم.',cl_reports:'تقارير الأشهر المحذوفة ستصبح فارغة.',cat_carry:'رصيد مُرحّل',carryNote:'رصيد مُرحّل حتى {d}',dataSize:'حجم البيانات: {v}',items:'عنصر',iosAdd:'لتثبيت رصيد كتطبيق: اضغط زر المشاركة {i} في Safari ثم «إضافة إلى الشاشة الرئيسية».',iosNotif:'على الآيفون تظهر التنبيهات عند فتح التطبيق.',sync:'مشاركة ودمج',m_sync:'دمج البيانات مع شريك',syncIntro:'إذا كان التطبيق عند أكثر من شخص، يرسل كل واحد ملف بياناته للآخر، ثم يضغط «دمج» فتجتمع البيانات عند الاثنين بدون تكرار.',syncS1:'اضغط «إرسال بياناتي» وأرسل الملف لشريكك على WhatsApp.',syncS2:'شريكك يضغط «دمج ملف من شريك» ويختار الملف.',syncS3:'ثم هو يرسل لك ملفه وتدمجه أنت، فيصبح عندكما نفس البيانات.',
 userName:'اسمك (يظهر عند شريكك)',sendMine:'إرسال بياناتي',mergeFile:'دمج ملف من شريك',undoMerge:'تراجع عن آخر دمج',mergePreview:'معاينة الدمج',mergeFrom:'من: {n}',willAdd:'سيُضاف',willUpd:'سيتحدّث',willDel:'سيُحذف',mergeNow:'دمج الآن',merged:'تم الدمج ✓',undone:'تم التراجع ✓',nothingNew:'لا يوجد جديد في هذا الملف',mergeNote:'الإعدادات وكلمة السر لا تتغير. يتم حفظ نسخة قبل الدمج لتستطيع التراجع.',
 c_customers:'زبائن',c_subs:'اشتراكات',c_accounts:'حسابات',c_products:'منتجات',c_tx:'حركات مالية',c_notes:'ملاحظات',c_services:'خدمات',c_templates:'رسائل',touchBio:'المس للفتح بالبصمة',menu:'القائمة',messages:'الرسائل',services:'إدارة الخدمات',newTpl:'رسالة جديدة',editTpl:'تعديل الرسالة',tplName:'اسم الرسالة',tplCat:'النوع',tplText:'نص الرسالة',insertVar:'اضغط على رمز لإضافته في النص:',preview:'معاينة',varsTitle:'ما معنى الرموز مثل {name}؟',
@@ -413,7 +432,9 @@ lowStockAlert:'مخزون منخفض: {name} ({n})',accExpAlert:'حساب {svc} 
 imported:'تم استيراد النسخة ✓',badFile:'ملف غير صالح',exported:'تم تصدير النسخة ✓',addSub:'اشتراك',addSale:'بيع',addExpense:'مصروف',addCust:'زبون',
 storageNote:'كل البيانات محفوظة على هاتفك فقط، بدون إنترنت أو سيرفر. خذ نسخة احتياطية من وقت لآخر.',unitPlaceholder:'GB / بروفايل / شهر',fromAccount:'مرتبط بحساب',noAccounts:'لا توجد حسابات لهذه الخدمة بعد',
 perCustomer:'الزبائن على هذا الحساب',version:'الإصدار',lastSub:'آخر اشتراك',subscriptions:'الاشتراكات',inactive:'غير فعّال',month:'الشهر',status:'الحالة'},
-en:{cleanup:'Clean up old data',m_clean:'Delete old, keep the balance',cleanIntro:'Delete old data to keep the app light. Your balance stays the same: the total of deleted transactions is kept as one “Carried balance” entry.',olderThan:'Older than',mo3:'3 months',mo6:'6 months',mo12:'1 year',mo24:'2 years',
+en:{pkOk:'✅ {n} more allowed ({u}/{m})',pkFullNow:'⛔ Package full ({u}/{m}) — no more numbers allowed',pkNoLimit:'👥 {u} members — no limit',pkGB:'{v} left',pkQtyOver:'⚠️ Quantity is more than what is left ({v})',pkSel:'Main package (line / account)',noPk:'No main package',newPk:'+ New main package',pkFullBlock:'This package is full ({u}/{m}). Pick another one, or raise “Allowed people” by editing the package.',pkCapBlock:'Only {v} left in this package. Lower the quantity or pick another package.',mainPk:'Main packages',noAccHint:'Add a main package (a Ushare line or a Netflix account) to see its number and members here.',addAcc:'Add package',slots:'Allowed people',slotsHint:'Ushare usually allows 3–4 numbers, Netflix usually 5 profiles. Leave empty for no limit.',mainLine:'Main line number / email',target:'Receiving number / profile',targetPh:'Number or profile name',members:'Members',free:'{n} free',full:'Full',overCap:'Over capacity',leftGB:'{v} left',accFullWarn:'Note: this account is full ({u}/{m})',accCapWarn:'Note: quantity is more than what is left in the account ({v})',msgMembers:'Message members',
+accExpAlert2:'{svc} “{acc}” {line}— {when} · {n} members',accFullAlert:'{svc} “{acc}” is full ({u}/{m})',accOverAlert:'{svc} “{acc}”: {u} shared of {c}',memberAlert:'{name} ({target}) — {svc} — {when}',
+cards:'Recharge cards',addCards:'Add recharge cards',cardsIntro:'Pick what you sell to add them as products, then set the price and stock for each.',c_alfa:'Alfa card',c_mtc:'Touch (MTC) card',c_alfaUSD:'Alfa dollars transfer',c_mtcUSD:'Touch (MTC) dollars transfer',c_alfaDays:'Alfa validity days',c_mtcDays:'Touch (MTC) validity days',denom:'Denomination (optional)',denomPh:'e.g. $7.58',addSel:'Add selected',added:'Added ✓',cleanup:'Clean up old data',m_clean:'Delete old, keep the balance',cleanIntro:'Delete old data to keep the app light. Your balance stays the same: the total of deleted transactions is kept as one “Carried balance” entry.',olderThan:'Older than',mo3:'3 months',mo6:'6 months',mo12:'1 year',mo24:'2 years',
 cl_subs:'Expired, fully paid subscriptions',cl_tx:'Transactions',cl_acc:'Expired accounts',cl_notes:'Old notes (not pinned)',cl_cust:'Customers with no subscriptions',cl_keep:'Never deleted: subscriptions with debt, and payments of subscriptions that remain.',cl_preview:'Will be deleted',cl_none:'No old data matches these options',cl_do:'Delete now',cl_backupFirst:'Save a backup first',cl_done:'Cleaned up ✓',cl_undo:'Undo last cleanup',cl_partner:'If you merge with a partner, this data will be deleted on their side at the next merge too.',cl_reports:'Reports for the deleted months will be empty.',cat_carry:'Carried balance',carryNote:'Carried balance up to {d}',dataSize:'Data size: {v}',items:'items',iosAdd:'To install Raseed as an app: tap the Share button {i} in Safari, then “Add to Home Screen”.',iosNotif:'On iPhone, reminders show when you open the app.',sync:'Share & merge',m_sync:'Merge data with a partner',syncIntro:'If more than one person uses the app, each sends their data file to the other and taps “Merge”, so both end up with the same data without duplicates.',syncS1:'Tap “Send my data” and send the file to your partner on WhatsApp.',syncS2:'Your partner taps “Merge a partner file” and picks it.',syncS3:'Then they send you their file and you merge it, so you both have the same data.',
 userName:'Your name (shown to your partner)',sendMine:'Send my data',mergeFile:'Merge a partner file',undoMerge:'Undo last merge',mergePreview:'Merge preview',mergeFrom:'From: {n}',willAdd:'Will be added',willUpd:'Will be updated',willDel:'Will be removed',mergeNow:'Merge now',merged:'Merged ✓',undone:'Undone ✓',nothingNew:'Nothing new in this file',mergeNote:'Settings and password are not changed. A copy is saved before merging so you can undo.',
 c_customers:'customers',c_subs:'subscriptions',c_accounts:'accounts',c_products:'products',c_tx:'transactions',c_notes:'notes',c_services:'services',c_templates:'messages',touchBio:'Touch to unlock with fingerprint',menu:'Menu',messages:'Messages',services:'Manage services',newTpl:'New message',editTpl:'Edit message',tplName:'Message name',tplCat:'Type',tplText:'Message text',insertVar:'Tap a code to insert it:',preview:'Preview',varsTitle:'What do codes like {name} mean?',
@@ -522,14 +543,15 @@ const tplText=tp=>tp.text||({rem:t('waTpl'),debt:t('waDebtTpl')}[tp.id])||t('tt_
 const tplRem=()=>tplText(tplById('rem')||{id:'rem'}), tplDebt=()=>tplText(tplById('debt')||{id:'debt'});
 function fillSample(txt){const d=new Date();d.setDate(d.getDate()+3);return String(txt).replaceAll('{name}',t('sampleName')).replaceAll('{service}','Netflix').replaceAll('{date}',fmtDate(ymd(d))).replaceAll('{price}',money(5)).replaceAll('{due}',money(2)).replaceAll('{business}',S.settings.bizName||'Digital TopUP')}
 function waLink(phone,text){let p=String(phone||'').replace(/[^\d+]/g,'');if(p.startsWith('+'))p=p.slice(1);else if(p.startsWith('00'))p=p.slice(2);else if(p.startsWith('0')&&p.length<=9)p='961'+p.slice(1);else if(p.length<=8&&p.length>=7)p='961'+p;return `https://wa.me/${p}?text=${encodeURIComponent(text)}`}
-function accUsage(a){const subs=S.subs.filter(s=>s.accountId===a.id&&status(s.end)!=='expired');const used=subs.reduce((x,s)=>x+num(s.qty),0);const rev=S.subs.filter(s=>s.accountId===a.id).reduce((x,s)=>x+num(s.price),0);return {subs,used,rev,profit:rev-num(a.cost)}}
-let toastT;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('on'),1900)}
+function accUsage(a){const subs=S.subs.filter(s=>s.accountId===a.id&&status(s.end)!=='expired');const used=subs.reduce((x,s)=>x+num(s.qty),0);const rev=S.subs.filter(s=>s.accountId===a.id).reduce((x,s)=>x+num(s.price),0);const members=subs.length,slots=num(a.slots),cap=num(a.capacity);return {subs,used,rev,profit:rev-num(a.cost),members,slots,freeSlots:slots?slots-members:null,left:cap?Math.round((cap-used)*100)/100:null,full:!!slots&&members>=slots,over:!!cap&&used>cap}}
+let toastT;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('on'),m.length>40?4200:1900)}
 
 /* ============ ALERTS ============ */
 function alerts(){
   const out=[];const rd=num(S.settings.remindDays);
-  for(const s of S.subs){const d=daysLeft(s.end);if(d<=rd&&d>=-7)out.push({kind:d<0?'bad':'warn',d,txt:t('subExpAlert',{name:cust(s.customerId).name,svc:svc(s.serviceId).name,when:whenTxt(s.end)}),sub:s.id})}
-  for(const a of S.accounts){if(!a.end)continue;const d=daysLeft(a.end);if(d<=rd&&d>=-7)out.push({kind:d<0?'bad':'warn',d,txt:t('accExpAlert',{svc:svc(a.serviceId).name,acc:a.label,when:whenTxt(a.end)}),acc:a.id})}
+  for(const s of S.subs){const d=daysLeft(s.end);if(d<=rd&&d>=-7)out.push({kind:d<0?'bad':'warn',d,txt:s.target?t('memberAlert',{name:cust(s.customerId).name,target:LRI(s.target),svc:svc(s.serviceId).name+(acc(s.accountId)?' «'+acc(s.accountId).label+'»':''),when:whenTxt(s.end)}):t('subExpAlert',{name:cust(s.customerId).name,svc:svc(s.serviceId).name,when:whenTxt(s.end)}),sub:s.id})}
+  for(const a of S.accounts){const u=accUsage(a);const sv=svc(a.serviceId);if(a.end){const d=daysLeft(a.end);if(d<=rd&&d>=-7)out.push({kind:d<0?'bad':'warn',d,txt:t('accExpAlert2',{svc:sv.name,acc:a.label,line:a.login?'('+LRI(a.login)+') ':'',when:whenTxt(a.end),n:u.members}),acc:a.id})}
+    if(u.over&&status(a.end||today())!=='expired')out.push({kind:'bad',d:0,txt:t('accOverAlert',{svc:sv.name,acc:a.label,u:u.used+' '+(sv.unit||''),c:num(a.capacity)+' '+(sv.unit||'')}),accE:a.id})}
   for(const n of S.notes){if(!n.remindAt)continue;const d=Math.round((parse(n.remindAt.slice(0,10))-parse(today()))/864e5);if(d<=0&&d>=-2)out.push({kind:'warn',d,txt:'📝 '+(n.title||(n.body||'').slice(0,40)),note:n.id})}
   for(const p of S.products){if(num(p.low)>0&&num(p.stock)<num(p.low))out.push({kind:'warn',d:0,txt:t('lowStockAlert',{name:p.name,n:p.stock}),prod:p.id})}
   return out.sort((a,b)=>a.d-b.d);
@@ -546,14 +568,15 @@ async function doSchedule(){
     const pend=await LN.getPending();if(pend.notifications.length)await LN.cancel({notifications:pend.notifications.map(n=>({id:n.id}))});
     const list=[];const now=new Date();const [hr,mn]=(S.settings.notifTime||'10:00').split(':').map(Number);const rd=num(S.settings.remindDays);
     const at=(dateStr,offset)=>{const d=parse(dateStr);d.setDate(d.getDate()-offset);d.setHours(hr,mn,0,0);return d};
-    for(const n of S.notes){if(n.remindAt){const d=new Date(n.remindAt);push(d,'📝 '+(n.title||t('notes')),(n.body||'').slice(0,120))}}
     const push=(date,title,body)=>{if(date>now&&list.length<200)list.push({id:list.length+1,title,body,schedule:{at:date,allowWhileIdle:true},smallIcon:'ic_stat_name'})};
-    for(const s of S.subs){const c=cust(s.customerId).name,sv=svc(s.serviceId).name;
-      if(rd>0)push(at(s.end,rd),`⏳ ${sv}`,t('subExpAlert',{name:c,svc:sv,when:t('daysLeft',{n:rd})}));
-      push(at(s.end,0),`⚠️ ${sv}`,t('subExpAlert',{name:c,svc:sv,when:t('today')}));}
+    for(const n of S.notes){if(n.remindAt){const d=new Date(n.remindAt);push(d,'📝 '+(n.title||t('notes')),(n.body||'').slice(0,120))}}
+    for(const s of S.subs){const c=cust(s.customerId).name,sv=svc(s.serviceId).name+(acc(s.accountId)?' «'+acc(s.accountId).label+'»':'');const msg=w=>s.target?t('memberAlert',{name:c,target:LRI(s.target),svc:sv,when:w}):t('subExpAlert',{name:c,svc:sv,when:w});
+      if(rd>0)push(at(s.end,rd),`⏳ ${svc(s.serviceId).name}`,msg(t('daysLeft',{n:rd})));
+      push(at(s.end,0),`⚠️ ${svc(s.serviceId).name}`,msg(t('today')));}
     for(const a of S.accounts){if(!a.end)continue;const sv=svc(a.serviceId).name;
-      if(rd>0)push(at(a.end,rd),`⏳ ${sv}`,t('accExpAlert',{svc:sv,acc:a.label,when:t('daysLeft',{n:rd})}));
-      push(at(a.end,0),`⚠️ ${sv}`,t('accExpAlert',{svc:sv,acc:a.label,when:t('today')}));}
+      const n=accUsage(a).members,line=a.login?'('+LRI(a.login)+') ':'';
+      if(rd>0)push(at(a.end,rd),`⏳ ${sv}`,t('accExpAlert2',{svc:sv,acc:a.label,line,when:t('daysLeft',{n:rd}),n}));
+      push(at(a.end,0),`⚠️ ${sv}`,t('accExpAlert2',{svc:sv,acc:a.label,line,when:t('today'),n}));}
     list.forEach(n=>delete n.smallIcon);
     {const base=S.meta.lastShared||S.meta.firstRun||today();const d=parse(base);d.setDate(d.getDate()+7);d.setHours(hr,mn,0,0);if(d<=now){d.setTime(now.getTime());d.setDate(d.getDate()+1);d.setHours(hr,mn,0,0)}push(d,'📦 Raseed',t('backupNotif'))}
     if(list.length)await LN.schedule({notifications:list});
@@ -603,6 +626,7 @@ function openForm({title,fields,data={},onSubmit,onDelete,onChange,note}){
   onChange&&onChange(frm,'__init');
 }
 const durOpts=()=>[{v:'1',l:t('m1')},{v:'2',l:t('m2')},{v:'3',l:t('m3')},{v:'6',l:t('m6')},{v:'12',l:t('m12')},{v:'c',l:t('custom')}];
+const LRI=v=>'\u2066'+v+'\u2069';
 const svcOpts=(withNew)=>[...S.services.map(s=>({v:s.id,l:s.name})),...(withNew?[{v:'__newsvc',l:t('newService')}]:[])];
 function newSvcFromForm(v){const name=(v.sName||'').trim();if(!name)return null;const o={id:uid(),name,unit:(v.sUnit||'').trim(),color:COLORS[S.services.length%COLORS.length]};S.services.push(o);return o.id}
 function toggleNewSvc(frm){const on=frm.querySelector('[name=serviceId]').value==='__newsvc';const r=frm.querySelector('[data-k="sName"]').closest('.row2');r.classList.toggle('hidden',!on)}
@@ -615,8 +639,8 @@ function subForm(sub,preset={}){
   const fields=[
     {k:'customerId',label:t('customer'),type:'select',options:custOpts},
     {k:'cName',label:t('customerName'),half:true},{k:'cPhone',label:t('phone'),type:'tel',half:true},
-    {k:'serviceId',label:t('service'),type:'select',options:svcOpts(true),half:true},
-    {k:'accountId',label:t('fromAccount'),type:'select',options:[{v:'',l:t('none')}],half:true},
+    {k:'accountId',label:t('pkSel'),type:'select',options:[{v:'',l:t('noPk')}]},
+    {k:'serviceId',label:t('service'),type:'select',options:svcOpts(true),half:true},{k:'target',label:t('target'),ph:t('targetPh'),half:true},
     {k:'sName',label:t('newServiceName'),half:true},{k:'sUnit',label:t('unit'),ph:t('unitPlaceholder'),half:true},
     {k:'qty',label:t('qty'),type:'number',half:true},{k:'price',label:t('price'),type:'number',req:true,half:true},
     {k:'start',label:t('start'),type:'date',half:true},{k:'dur',label:t('duration'),type:'select',options:durOpts(),half:true},
@@ -631,8 +655,24 @@ function subForm(sub,preset={}){
       const nc=g('customerId').value==='__new';
       frm.querySelector('[data-k="cName"]').closest('.row2').classList.toggle('hidden',!nc);
       toggleNewSvc(frm);
-      if(k==='__init'||k==='serviceId'){const sid=g('serviceId').value;const accs=S.accounts.filter(a=>a.serviceId===sid);const cur=k==='__init'?sub.accountId:'';g('accountId').innerHTML=[`<option value="">${t('none')}</option>`,...accs.map(a=>`<option value="${a.id}" ${a.id===cur?'selected':''}>${esc(a.label)}${a.end?' · '+fmtDate(a.end):''}</option>`)].join('');frm.querySelector('[data-k="qty"] label').textContent=`${t('qty')} (${svc(sid).unit||'-'})`}
-      if(k==='accountId'){const a=acc(g('accountId').value);if(a&&a.end){g('end').value=a.end;g('dur').value='c'}}
+      if(k==='__init'){g('qty').addEventListener('input',()=>frm.dispatchEvent(new Event('change')));const cur=sub.accountId||'';const mineActive=!isNew&&status(sub.end)!=='expired';
+        g('accountId').innerHTML=`<option value="">${t('noPk')}</option>`+S.services.map(x=>{const accs=S.accounts.filter(a=>a.serviceId===x.id&&(daysLeft(a.end||today())>=0||a.id===cur));if(!accs.length)return '';
+          return `<optgroup label="${esc(x.name)}">`+accs.map(a=>{const u=accUsage(a);const isCur=a.id===cur&&mineActive;const fullNow=u.full&&!isCur;const info=u.slots?(fullNow?'⛔ '+t('full'):'✅ '+t('free',{n:u.freeSlots+(isCur?1:0)})):'';
+            return `<option value="${a.id}" ${a.id===cur?'selected':''} ${fullNow?'disabled':''}>${esc(a.label)}${info?' — '+info:''}</option>`}).join('')+'</optgroup>'}).join('')+`<option value="__newacc">${t('newPk')}</option>`}
+      if(k==='accountId'){const v=g('accountId').value;if(v==='__newacc'){closeSheet();setTimeout(()=>accForm(),300);return}const a=acc(v);if(a){g('serviceId').value=a.serviceId;toggleNewSvc(frm);if(a.end){g('end').value=a.end;g('dur').value='c'}const u=accUsage(a);if(num(a.capacity)&&num(a.capacity)===u.slots&&isNew)g('qty').value=1}}
+      if(k==='serviceId'){const a=acc(g('accountId').value);if(a&&a.serviceId!==g('serviceId').value)g('accountId').value=''}
+      {const tg=g('target');const a=acc(g('accountId').value);
+        const auto=()=>{if(!a)return '';const u=accUsage(a);const profileLike=num(a.capacity)&&num(a.capacity)===u.slots;
+          if(profileLike){const used=new Set(u.subs.filter(x=>isNew||x.id!==sub.id).map(x=>(x.target||'').trim().toLowerCase()));for(let i=1;i<=Math.max(u.slots,1)+5;i++){const n='Profile '+i;if(!used.has(n.toLowerCase()))return n}return ''}
+          const cid=g('customerId').value;return cid==='__new'?(g('cPhone').value||'').trim():(cust(cid).phone||'')};
+        if(['__init','accountId','customerId','cPhone'].includes(k)){const cur=tg.value.trim();if(!cur||cur===frm.__autoT){const v=auto();if(!(k==='__init'&&!isNew&&cur)){tg.value=v;frm.__autoT=v}}}
+        if(k==='target')frm.__autoT=null}
+      {let box=frm.querySelector('#pkInfo');if(!box){box=document.createElement('div');box.id='pkInfo';frm.querySelector('[data-k="accountId"]').after(box)}
+        const a=acc(g('accountId').value);if(!a){box.className='hidden'}else{const sv=svc(a.serviceId);const u=accUsage(a);const mine=!isNew&&sub.accountId===a.id&&status(sub.end)!=='expired';const members=u.members-(mine?1:0),used=u.used-(mine?num(sub.qty):0);const cap=num(a.capacity);const left=Math.round((cap-used)*100)/100;const q=num(g('qty').value);
+          const parts=[];let bad=false;if(u.slots){if(members>=u.slots){parts.push(t('pkFullNow',{u:members,m:u.slots}));bad=true}else parts.push(t('pkOk',{n:u.slots-members,u:members,m:u.slots}))}else parts.push(t('pkNoLimit',{u:members}));
+          if(cap&&cap!==u.slots){if(q>left){parts.push(t('pkQtyOver',{v:LRI(left+' '+(sv.unit||''))}));bad=true}else parts.push(t('pkGB',{v:LRI(left+' '+(sv.unit||''))}))}
+          box.className='pk-info '+(bad?'bad':'ok');box.innerHTML=(a.login?`<span style="color:var(--text)">📞 <bdi dir="ltr">${esc(a.login)}</bdi></span><br>`:'')+parts.map(esc).join('<br>')}}
+      if(k==='__init'||k==='serviceId'||k==='accountId'){const sid=g('serviceId').value;frm.querySelector('[data-k="qty"] label').textContent=`${t('qty')} (${svc(sid).unit||'-'})`}
       if(k==='start'||k==='dur'){const d=g('dur').value;if(d!=='c'&&g('start').value)g('end').value=addMonths(g('start').value,+d)}
       if(k==='end')g('dur').value='c';
       if((k==='price'||k==='price__cur')&&isNew){const pc=g('price__cur'),nc=g('paidNow__cur');if(pc&&nc)nc.value=pc.value;g('paidNow').value=g('price').value}
@@ -642,7 +682,8 @@ function subForm(sub,preset={}){
       if(cid==='__new'){if(!v.cName.trim()){toast(t('required'));return false}const c={id:uid(),name:v.cName.trim(),phone:v.cPhone.trim(),notes:''};S.customers.push(c);cid=c.id}
       if(!cid){toast(t('required'));return false}
       if(v.serviceId==='__newsvc'){const nid=newSvcFromForm(v);if(!nid){toast(t('required'));return false}v.serviceId=nid;v.accountId=''}
-      const o={customerId:cid,serviceId:v.serviceId,accountId:v.accountId,qty:num(v.qty),price:num(v.price),start:v.start||today(),end:v.end,notes:v.notes};
+      const o={customerId:cid,serviceId:v.serviceId,accountId:v.accountId,target:(v.target||'').trim(),qty:num(v.qty),price:num(v.price),start:v.start||today(),end:v.end,notes:v.notes};
+      if(o.accountId){const a=acc(o.accountId);if(a){const u=accUsage(a);const mine=!isNew&&sub.accountId===o.accountId&&status(sub.end)!=='expired';const members=u.members-(mine?1:0),used=u.used-(mine?num(sub.qty):0);if(u.slots&&members>=u.slots){toast(t('pkFullBlock',{u:members,m:u.slots}));return false}if(num(a.capacity)&&used+o.qty>num(a.capacity)){toast(t('pkCapBlock',{v:LRI((Math.round((num(a.capacity)-used)*100)/100)+' '+(svc(a.serviceId).unit||''))}));return false}}}
       if(isNew){o.id=uid();o.charges=o.price;o.history=[{date:today(),start:o.start,end:o.end,price:o.price}];S.subs.push(o);const pn=Math.min(num(v.paidNow),o.price);if(pn>0)addTx('in',pn,'sub',`${cust(cid).name} · ${svc(o.serviceId).name}${v.__note('paidNow')}`,null,{ref:o.id,serviceId:o.serviceId})}
       else{const dp=o.price-num(sub.price);Object.assign(sub,o);sub.charges=chargesOf(sub)+dp}
     },
@@ -670,17 +711,19 @@ function accForm(a){
   openForm({title:isNew?t('newAccount'):t('editAccount'),
     fields:[{k:'serviceId',label:t('service'),type:'select',options:svcOpts(true),half:true},{k:'label',label:t('accLabel'),req:true,half:true},
       {k:'sName',label:t('newServiceName'),half:true},{k:'sUnit',label:t('unit'),ph:t('unitPlaceholder'),half:true},
-      {k:'login',label:t('login')},
+      {k:'login',label:t('mainLine'),type:'tel'},
       {k:'start',label:t('start'),type:'date',half:true},{k:'dur',label:t('duration'),type:'select',options:durOpts(),half:true},
       {k:'end',label:t('end'),type:'date',req:true},
-      {k:'cost',label:t('cost'),type:'number',half:true},{k:'capacity',label:t('capacity'),type:'number',half:true},
+      {k:'capacity',label:t('capacity'),type:'number',half:true},{k:'slots',label:t('slots'),type:'number',half:true},
+      {k:'cost',label:t('cost'),type:'number'},
       ...(isNew?[{k:'deduct',label:t('deduct'),type:'toggle'}]:[]),
       {k:'notes',label:t('notes'),type:'textarea'}],
     data:{...a,dur:isNew?'1':'c',end:a.end||addMonths(a.start,1),deduct:a.deduct?1:''},
     onChange:(frm,k)=>{const g=n=>frm.querySelector(`[name="${n}"]`);toggleNewSvc(frm);
       if(k==='__init'||k==='serviceId')frm.querySelector('[data-k="capacity"] label').textContent=`${t('capacity')} (${svc(g('serviceId').value).unit||'-'})`;
+      if(k==='__init'){frm.querySelector('[data-k="slots"]').closest('.row2').insertAdjacentHTML('afterend',`<div class="hint">👥 ${t('slotsHint')}</div>`);g('login').setAttribute('type','text')}
       if(k==='start'||k==='dur'){const d=g('dur').value;if(d!=='c')g('end').value=addMonths(g('start').value,+d)}if(k==='end')g('dur').value='c'},
-    onSubmit:v=>{if(v.serviceId==='__newsvc'){const nid=newSvcFromForm(v);if(!nid){toast(t('required'));return false}v.serviceId=nid}const o={serviceId:v.serviceId,label:v.label.trim(),login:v.login,start:v.start,end:v.end,cost:num(v.cost),capacity:num(v.capacity),notes:v.notes};
+    onSubmit:v=>{if(v.serviceId==='__newsvc'){const nid=newSvcFromForm(v);if(!nid){toast(t('required'));return false}v.serviceId=nid}const o={serviceId:v.serviceId,label:v.label.trim(),login:v.login,start:v.start,end:v.end,cost:num(v.cost),capacity:num(v.capacity),slots:num(v.slots)||0,notes:v.notes};
       if(isNew){o.id=uid();S.accounts.push(o);if(v.deduct&&o.cost>0)addTx('out',o.cost,'account',`${svc(o.serviceId).name} · ${o.label}`)}else Object.assign(a,o)},
     onDelete:isNew?null:()=>{S.accounts=S.accounts.filter(x=>x.id!==a.id);S.subs.forEach(s=>{if(s.accountId===a.id)s.accountId=''})}});
 }
@@ -744,7 +787,7 @@ function subCard(s){
   return `<div class="card" data-sub="${s.id}">
    <div class="sub-hdr"><div style="display:flex;gap:10px;align-items:center;min-width:0"><div class="av" style="background:${sv.color}">${esc(initials(sv.name))}</div><div style="min-width:0"><div class="t" style="font-weight:800">${esc(c.name)}</div><div class="st" style="color:var(--muted);font-size:12.5px;font-weight:600">${esc(sv.name)}${a?' · '+esc(a.label):''}</div></div></div>
    <div style="text-align:end"><div class="amt ltr" style="font-weight:800">${money(s.price)}</div>${m2(s.price)}${payChip(s)}</div></div>
-   <div class="sub-meta"><span>${t('qty')}: <b>${s.qty||0} ${esc(sv.unit||'')}</b></span><span>${t('start')}: <b>${fmtDate(s.start)}</b></span><span>${t('end')}: <b>${fmtDate(s.end)}</b></span></div>
+   <div class="sub-meta">${s.target?`<span>📱 <b class="ltr">${esc(s.target)}</b></span>`:''}<span>${t('qty')}: <b>${s.qty||0} ${esc(sv.unit||'')}</b></span><span>${t('start')}: <b>${fmtDate(s.start)}</b></span><span>${t('end')}: <b>${fmtDate(s.end)}</b></span></div>
    <div class="bar"><i style="width:${pct}%;background:${col}"></i></div>
    <div style="margin-top:8px">${stChip(s.end)}</div>
    <div class="mini-acts">${c.phone?`<button class="wa" data-act="msg">${I('wa')} ${t('remind')}</button>`:''}
@@ -754,20 +797,30 @@ function bindSubActions(root){root.querySelectorAll('[data-sub]').forEach(el=>{c
 function accCard(a){
   const sv=svc(a.serviceId);const u=accUsage(a);const cap=num(a.capacity);
   const total=Math.max(1,daysLeft(a.end)-daysLeft(a.start));const pct=Math.min(100,Math.max(0,(1-daysLeft(a.end)/total)*100));
+  const slotChip=u.slots?`<span class="chip ${u.full?'c-warn':'c-ok'}">👥 ${u.members}/${u.slots}${u.full?' · '+t('full'):''}</span>`:`<span class="chip c-mut">👥 ${u.members}</span>`;
   return `<div class="card" data-acc="${a.id}" style="border-inline-start:4px solid ${sv.color}">
-   <div class="sub-hdr"><div><div style="font-weight:800;font-size:16px">${esc(a.label)}</div><div style="color:var(--muted);font-size:12.5px;font-weight:600">${esc(sv.name)}${a.login?' · <span class="ltr">'+esc(a.login)+'</span>':''}</div></div>${stChip(a.end)}</div>
+   <div class="sub-hdr"><div style="min-width:0"><div style="font-weight:800;font-size:16px">${esc(a.label)}</div><div style="color:var(--muted);font-size:12.5px;font-weight:600">${esc(sv.name)}${a.login?` · 📞 <span class="ltr" style="color:var(--text);font-weight:800">${esc(a.login)}</span>`:''}</div></div><div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">${stChip(a.end)}${slotChip}</div></div>
    <div class="sub-meta"><span>${t('start')}: <b>${fmtDate(a.start)}</b></span><span>${t('end')}: <b>${fmtDate(a.end)}</b></span></div>
    <div class="bar"><i style="width:${pct}%;background:${sv.color}"></i></div>
+   ${cap?`<div style="display:flex;justify-content:space-between;margin-top:12px;font-size:13px;font-weight:800"><span>${t('used')}: ${u.used} / ${cap} ${esc(sv.unit||'')}</span><span style="color:${u.over?'var(--bad)':'var(--ok)'}">${u.over?t('overCap'):t('leftGB',{v:u.left+' '+esc(sv.unit||'')})}</span></div><div class="bar" style="height:10px"><i style="width:${Math.min(100,u.used/cap*100)}%;background:${u.over?'var(--bad)':'linear-gradient(90deg,var(--primary),var(--primary2))'}"></i></div>`:''}
+   ${u.subs.length?`<div style="margin-top:12px;font-size:12.5px;color:var(--muted);font-weight:800">${t('members')}</div>${u.subs.sort((x,y)=>x.end.localeCompare(y.end)).map(s=>{const c=cust(s.customerId);return `<div class="camp" style="padding:8px 0"><div class="av" style="background:${sv.color};width:34px;height:34px;font-size:13px">${esc(initials(c.name))}</div><div class="mid"><div class="t" style="font-size:14px">${esc(c.name)}</div><div class="st">${s.target?'📱 <span class="ltr">'+esc(s.target)+'</span> · ':''}${s.qty||0} ${esc(sv.unit||'')}${dueOf(s)>0?' · <span style="color:var(--bad)">'+t('debt')+' <span class="ltr">'+money(dueOf(s))+'</span></span>':''}</div></div>${stChip(s.end)}</div>`}).join('')}`:''}
+   ${u.slots&&u.freeSlots>0?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${Array.from({length:Math.min(u.freeSlots,6)},()=>`<button class="chip c-mut" data-act="add" style="border:1.5px dashed var(--line)">+ ${t('free',{n:1}).replace(/^1 /,'')}</button>`).join('')}</div>`:''}
    <div class="row2" style="margin-top:12px;gap:8px">
-    <div class="stat" style="padding:9px 10px"><div><span>${t('used')}${cap?` / ${cap}`:''}</span><b>${u.used} ${esc(sv.unit||'')}</b></div></div>
-    <div class="stat" style="padding:9px 10px"><div><span>${t('remaining')}</span><b>${cap?(cap-u.used)+' '+esc(sv.unit||''):'—'}</b></div></div>
     <div class="stat" style="padding:9px 10px"><div><span>${t('cost')} / ${t('revenue')}</span><b class="ltr" style="font-size:15px">${money(a.cost)} / ${money(u.rev)}</b></div></div>
     <div class="stat" style="padding:9px 10px"><div><span>${t('profit')}</span><b class="ltr" style="color:${u.profit>=0?'var(--ok)':'var(--bad)'}">${money(u.profit)}</b></div></div></div>
-   ${cap?`<div class="bar"><i style="width:${Math.min(100,u.used/cap*100)}%;background:linear-gradient(90deg,var(--primary),var(--primary2))"></i></div>`:''}
-   ${u.subs.length?`<div style="margin-top:10px;font-size:12.5px;color:var(--muted);font-weight:700">${t('perCustomer')}:</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${u.subs.map(s=>`<span class="chip c-mut">${esc(cust(s.customerId).name)} · ${s.qty} ${esc(sv.unit||'')} · ${whenTxt(s.end)}</span>`).join('')}</div>`:''}
-   <div class="mini-acts"><button data-act="add">${I('plus')} ${t('customer')}</button><button data-act="renew">${I('renew')} ${t('renew')}</button><button data-act="edit">${I('edit')} ${t('edit')}</button></div></div>`;
+   <div class="mini-acts"><button data-act="add">${I('plus')} ${t('customer')}</button><button data-act="msg" class="wa">${I('mega')}</button><button data-act="renew">${I('renew')} ${t('renew')}</button><button data-act="edit">${I('edit')}</button></div></div>`;
 }
-function bindAccActions(root){root.querySelectorAll('[data-acc]').forEach(el=>{const a=acc(el.dataset.acc);el.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{const x=b.dataset.act;if(x==='add')subForm(null,{accountId:a.id});if(x==='renew')renewAcc(a);if(x==='edit')accForm(a)})})}
+function accMini(a){const sv=svc(a.serviceId);const u=accUsage(a);const cap=num(a.capacity);const meter=cap&&cap!==u.slots;const U=v=>`<bdi dir="ltr">${v}${sv.unit?' '+esc(sv.unit):''}</bdi>`;
+  const ppl=u.subs.slice().sort((x,y)=>x.end.localeCompare(y.end)).map(s=>`<span class="${status(s.end)==='soon'?'end':''}">${esc(cust(s.customerId).name)}${s.target?' · <bdi dir="ltr">'+esc(s.target)+'</bdi>':''}${meter?' · '+U(s.qty||0):''}</span>`).join('')+(u.slots&&u.freeSlots>0?Array.from({length:Math.min(u.freeSlots,5)},()=>`<span class="free">+</span>`).join(''):'');
+  return `<button class="pk" data-pk="${a.id}" style="--pc:${sv.color}"><div class="hd"><div style="flex:1;min-width:0"><div class="nm">${esc(a.label)}</div><div class="ln">${a.login?'📞 <bdi dir="ltr">'+esc(a.login)+'</bdi> · ':''}👥 <bdi dir="ltr">${u.members}${u.slots?'/'+u.slots:''}</bdi>${u.full?' · '+t('full'):''}</div></div>${a.end?stChip(a.end):''}</div>
+   ${meter?`<div class="meter"><span><bdi dir="ltr">${u.used}/${cap}${sv.unit?' '+esc(sv.unit):''}</bdi></span><span style="color:${u.over?'var(--bad)':'var(--ok)'}">${u.over?t('overCap'):t('leftGB',{v:U(u.left)})}</span></div><div class="bar" style="margin-top:5px"><i style="width:${Math.min(100,u.used/cap*100)}%;background:${u.over?'var(--bad)':sv.color}"></i></div>`:''}
+   ${ppl?`<div class="ppl">${ppl}</div>`:''}</button>`}
+function homePackages(){const accs=S.accounts.filter(a=>!a.end||daysLeft(a.end)>=-7);
+  if(!accs.length)return `<div class="sec-title"><h3>${t('mainPk')}</h3><button class="link" data-addacc>+ ${t('addAcc')}</button></div><div class="hint" style="margin:-4px 2px 6px">${t('noAccHint')}</div>`;
+  const groups=S.services.map(x=>({x,list:accs.filter(a=>a.serviceId===x.id).sort((a,b)=>(a.end||'9').localeCompare(b.end||'9'))})).filter(g=>g.list.length);
+  return `<div class="sec-title"><h3>${t('mainPk')}</h3><button class="link" data-addacc>+ ${t('addAcc')}</button></div>`+groups.map(g=>`<div class="pk-grp"><i style="background:${g.x.color}"></i>${esc(g.x.name)} · ${g.list.length}</div>${g.list.map(accMini).join('')}`).join('')}
+function openAccSheet(a){openSheet(`<div id="accSh">${accCard(a)}</div>`);const root=document.getElementById('accSh');root.querySelector('.card').style.boxShadow='none';bindAccActions(root)}
+function bindAccActions(root){root.querySelectorAll('[data-acc]').forEach(el=>{const a=acc(el.dataset.acc);el.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{const x=b.dataset.act;if(x==='add')subForm(null,{accountId:a.id});if(x==='renew')renewAcc(a);if(x==='edit')accForm(a);if(x==='msg')openSend('out','acc:'+a.id)})})}
 const empty=(icon)=>`<div class="empty">${I(icon)}<div>${t('noData')}</div></div>`;
 
 /* ============ VIEWS ============ */
@@ -796,12 +849,15 @@ function viewHome(){
   <div class="sec-title"><h3>${t('services')}</h3></div>
   <div class="svc-row">${S.services.map(s=>{const subs=S.subs.filter(x=>x.serviceId===s.id&&status(x.end)!=='expired');const accs=S.accounts.filter(a=>a.serviceId===s.id&&a.end).sort((a,b)=>a.end.localeCompare(b.end));const nxt=accs.find(a=>daysLeft(a.end)>=0)||accs[accs.length-1];
     return `<button class="svc-card" data-svc="${s.id}" style="background:linear-gradient(140deg,${s.color},${s.color}bb)"><div class="nm">${esc(s.name)}</div><div class="n">${subs.length}</div><div class="s">${t('customersCount',{n:new Set(subs.map(x=>x.customerId)).size})} · ${accs.length} ${t('accounts')}</div>${nxt?`<div class="end"><bdi>${esc(nxt.label)}</bdi>: ${whenTxt(nxt.end)}</div>`:''}</button>`}).join('')}<button class="svc-card add" data-addsvc>${I('plus')}${t('addService')}</button></div>
+  <div id="pkWrap">${homePackages()}</div>
   <div class="sec-title"><h3>${t('expiringSoon')}</h3><div style="display:flex;gap:14px"><button class="link" data-camp>📣 ${t('campaign')}</button><button class="link" data-go="subs">${t('seeAll')}</button></div></div>
   <div id="upc">${upcoming.map(subCard).join('')||empty('check')}</div>`;
 }
 function bindHome(){
   document.querySelectorAll('[data-qa]').forEach(b=>b.onclick=()=>{const q=b.dataset.qa;if(q==='sub')subForm();if(q==='cust')custForm();if(q==='exp')txForm(null,'expense');if(q==='sale'){if(!S.products.length){UI.tab='products';render();prodForm()}else pickProduct()}});
-  document.querySelectorAll('[data-svc]').forEach(b=>b.onclick=()=>{UI.tab='subs';UI.svcFilter=b.dataset.svc;window.scrollTo(0,0);render(true)});
+  document.querySelectorAll('[data-svc]').forEach(b=>b.onclick=()=>{UI.tab='subs';UI.svcFilter=b.dataset.svc;UI.subSeg=S.accounts.some(a=>a.serviceId===b.dataset.svc)?'accounts':'subs';window.scrollTo(0,0);render(true)});
+  document.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>openAccSheet(acc(b.dataset.pk)));
+  document.querySelectorAll('[data-addacc]').forEach(b=>b.onclick=()=>{UI.svcFilter='all';accForm()});
   document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{UI.tab=b.dataset.go;UI.statusFilter='soon';render()});
   bindSubActions(document.getElementById('upc'));
 }
@@ -846,11 +902,19 @@ function viewProducts(){
   const val=S.products.reduce((a,p)=>a+num(p.buy)*num(p.stock),0);
   const m=S.tx.filter(x=>x.category==='sale'&&x.date.slice(0,7)===today().slice(0,7));const sales=m.reduce((a,x)=>a+x.amount,0);const mg=m.reduce((a,x)=>a+x.amount-num(x.costBasis),0);
   return `<div class="grid"><div class="stat"><div class="ic" style="background:#0ea5e922;color:#0ea5e9">${I('box')}</div><div><b class="ltr">${money(val)}</b><span>${t('stockValue')}</span></div></div><div class="stat"><div class="ic" style="background:#22c55e22;color:#22c55e">${I('trend')}</div><div><b class="ltr">${money(mg)}</b><span>${t('margin')} · ${t('month')}</span></div></div></div>
+  <button class="btn ghost" id="addCards" style="margin:0 0 12px;border-style:dashed;color:var(--primary)">${I('cash')} ${t('addCards')}</button>
   ${S.products.map(p=>{const low=num(p.low)>0&&num(p.stock)<num(p.low);const marg=num(p.sell)-num(p.buy);
    return `<div class="card" data-p="${p.id}"><div class="sub-hdr"><div style="display:flex;gap:10px;align-items:center"><div class="av" style="background:${low?'var(--warn)':'#14b8a6'}">${I('box','width=20 height=20')}</div><div><div style="font-weight:800">${esc(p.name)}</div><div style="color:var(--muted);font-size:12.5px;font-weight:600">${t('buy')} <span class="ltr">${money(p.buy)}</span> · ${t('sell')} <span class="ltr">${money(p.sell)}</span></div></div></div><div style="text-align:end"><span class="chip ${low?'c-warn':'c-mut'}">${t('stock')}: ${p.stock}</span><div class="ltr" style="font-size:12px;color:var(--ok);font-weight:700;margin-top:3px">+${money(marg)}</div></div></div>
    <div class="mini-acts"><button data-pa="sell" style="color:var(--ok)">${I('cart')} ${t('sellNow')}</button><button data-pa="restock">${I('up')} ${t('restock')}</button><button data-pa="edit">${I('edit')}</button></div></div>`}).join('')||empty('box')}`;
 }
-function bindProducts(){document.querySelectorAll('[data-p]').forEach(el=>{const p=S.products.find(x=>x.id===el.dataset.p);el.querySelectorAll('[data-pa]').forEach(b=>b.onclick=()=>{const a=b.dataset.pa;if(a==='sell')sellForm(p);if(a==='restock')restockForm(p);if(a==='edit')prodForm(p)})})}
+function cardsSheet(){const opts=['c_alfa','c_mtc','c_alfaUSD','c_mtcUSD','c_alfaDays','c_mtcDays'];const sel={c_alfa:1,c_mtc:1};
+  const draw=()=>{openSheet(`<h2>${I('cash','width=22 height=22')} ${t('cards')}</h2><div class="note">${t('cardsIntro')}</div>
+   ${opts.map(k=>`<button class="tog" data-ck="${k}" style="width:100%;margin-bottom:8px"><span>${k.includes('alfa')?'🔴':'🔵'} ${t(k)}</span><span class="sw ${sel[k]?'on':''}"></span></button>`).join('')}
+   <div class="f"><label>${t('denom')}</label><input id="cDen" placeholder="${t('denomPh')}"></div>
+   <button class="btn" id="cAdd">${I('plus')} ${t('addSel')}</button>`);
+   sb.querySelectorAll('[data-ck]').forEach(b=>b.onclick=()=>{const v=document.getElementById('cDen').value;sel[b.dataset.ck]=!sel[b.dataset.ck];draw();document.getElementById('cDen').value=v});
+   document.getElementById('cAdd').onclick=()=>{const den=document.getElementById('cDen').value.trim();let n=0;for(const k of opts)if(sel[k]){S.products.push({id:uid(),name:t(k)+(den?' '+den:''),buy:0,sell:0,stock:0,low:0,notes:''});n++}if(!n)return;save();closeSheet();render();toast(t('added'))}};draw()}
+function bindProducts(){const ac=document.getElementById('addCards');if(ac)ac.onclick=cardsSheet;document.querySelectorAll('[data-p]').forEach(el=>{const p=S.products.find(x=>x.id===el.dataset.p);el.querySelectorAll('[data-pa]').forEach(b=>b.onclick=()=>{const a=b.dataset.pa;if(a==='sell')sellForm(p);if(a==='restock')restockForm(p);if(a==='edit')prodForm(p)})})}
 function viewWallet(){
   const seg=`<div class="seg"><button data-ws="w" class="${UI.wSeg!=='r'?'on':''}">${t('wallet')}</button><button data-ws="r" class="${UI.wSeg==='r'?'on':''}"><span class="rb">${I('report')}</span>${t('reports')}</button></div>`;
   if(UI.wSeg==='r')return seg+viewReports();
@@ -900,7 +964,7 @@ function openSettings(){
   <div class="btns"><button class="btn ghost" id="expB">${I('up')} ${t('export')}</button><button class="btn ghost" id="impB">${I('down')} ${t('import')}</button></div>
   <button class="btn ghost" id="clnB" style="margin-top:10px">${I('trash')} ${t('cleanup')}</button>
   <button class="btn danger" id="rstB" style="margin-top:10px">${I('trash')} ${t('reset')}</button>
-  <div style="text-align:center;color:var(--muted);font-size:12px;margin-top:14px">Raseed · by Digital TopUP · ${t('version')} 3.8</div>`);
+  <div style="text-align:center;color:var(--muted);font-size:12px;margin-top:14px">Raseed · by Digital TopUP · ${t('version')} 4.2</div>`);
   sb.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{s.lang=b.dataset.lang;save();applyChrome();render();openSettings()});
   sb.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{s.theme=b.dataset.th;save();applyChrome();openSettings()});
   document.getElementById('setF').onchange=()=>{const v=collect(document.getElementById('setF'));s.currency=v.currency;s.openingBalance=num(v.openingBalance);s.remindDays=Math.min(60,Math.max(0,parseInt(v.remindDays)||0));let h=(parseInt(v.nh)||12)%12;if(v.np==='pm')h+=12;s.notifTime=pad(h)+':'+pad(parseInt(v.nm)||0);document.getElementById('tHint').textContent='⏰ '+t('notifAt',{t:fmtTime(s.notifTime)});s.second=!!v.second;s.rate=num(v.rate);s.bizName=v.bizName.trim()||'Digital TopUP';s.bizPhone=v.bizPhone.trim();s.bizNote=v.bizNote.trim();if('widgetBal' in v)s.widgetBal=!!v.widgetBal;save();render();toast(t('saved'))};
@@ -931,7 +995,7 @@ document.getElementById('fileIn').onchange=e=>{const f=e.target.files[0];if(!f)r
 function openAlerts(){const a=alerts();
   openSheet(`<h2>${I('bell','width=22 height=22')} ${t('alerts')}</h2><button class="btn ghost" id="alCamp" style="margin:0 0 12px">${I('mega')} ${t('campaign')}</button>${a.map((x,i)=>`<button class="item" data-al="${i}"><div class="av" style="background:${x.kind==='bad'?'var(--bad)':'var(--warn)'}">${I(x.prod?'box':'clock','width=20 height=20')}</div><div class="mid"><div class="t" style="white-space:normal">${esc(x.txt)}</div></div></button>`).join('')||`<div class="empty">${t('noAlerts')}</div>`}`);
   document.getElementById('alCamp').onclick=()=>openCampaign();
-  sb.querySelectorAll('[data-al]').forEach(b=>b.onclick=()=>{const x=a[+b.dataset.al];if(x.sub)renewSub(S.subs.find(s=>s.id===x.sub));else if(x.acc)renewAcc(acc(x.acc));else if(x.prod)restockForm(S.products.find(p=>p.id===x.prod));else if(x.note)noteForm(S.notes.find(n=>n.id===x.note))});
+  sb.querySelectorAll('[data-al]').forEach(b=>b.onclick=()=>{const x=a[+b.dataset.al];if(x.sub)renewSub(S.subs.find(s=>s.id===x.sub));else if(x.acc)renewAcc(acc(x.acc));else if(x.prod)restockForm(S.products.find(p=>p.id===x.prod));else if(x.accE)accForm(acc(x.accE));else if(x.note)noteForm(S.notes.find(n=>n.id===x.note))});
 }
 
 /* ============ NOTES ============ */
@@ -1250,11 +1314,12 @@ function pickTpl(s){const c=cust(s.customerId);const rec=dueOf(s)>0&&status(s.en
 function openSend(tplId,mode){const tp=tplById(tplId)||S.templates[0];
   mode=mode||({rem:'in7',debt:'debt'}[tp.cat])||'all';
   let rows=[];const per=['in3','in7','exp','debt'];
-  if(per.includes(mode)){let l;if(mode==='in3')l=S.subs.filter(s=>daysLeft(s.end)>=0&&daysLeft(s.end)<=3);else if(mode==='in7')l=S.subs.filter(s=>daysLeft(s.end)>=0&&daysLeft(s.end)<=7);else if(mode==='exp')l=S.subs.filter(s=>daysLeft(s.end)<0&&daysLeft(s.end)>=-30);else l=S.subs.filter(s=>dueOf(s)>0);
+  if(mode.startsWith('acc:')){const aid=mode.slice(4);const a=acc(aid);rows=S.subs.filter(s=>s.accountId===aid&&status(s.end)!=='expired').sort((x,y)=>x.end.localeCompare(y.end)).map(s=>({c:cust(s.customerId),s,key:s.id,info:`${a?a.label:''}${s.target?' · '+s.target:''} · ${whenTxt(s.end)}`}))}
+  else if(per.includes(mode)){let l;if(mode==='in3')l=S.subs.filter(s=>daysLeft(s.end)>=0&&daysLeft(s.end)<=3);else if(mode==='in7')l=S.subs.filter(s=>daysLeft(s.end)>=0&&daysLeft(s.end)<=7);else if(mode==='exp')l=S.subs.filter(s=>daysLeft(s.end)<0&&daysLeft(s.end)>=-30);else l=S.subs.filter(s=>dueOf(s)>0);
     rows=l.sort((a,b)=>a.end.localeCompare(b.end)).map(s=>({c:cust(s.customerId),s,key:s.id,info:`${svc(s.serviceId).name} · ${mode==='debt'?money(dueOf(s)):whenTxt(s.end)}`}))}
   else{const sid=mode.startsWith('svc:')?mode.slice(4):null;
     rows=S.customers.map(c=>{const subs=S.subs.filter(s=>s.customerId===c.id&&(!sid||s.serviceId===sid));const act=subs.filter(s=>status(s.end)!=='expired').sort((a,b)=>a.end.localeCompare(b.end));const s=act[0]||(sid?null:[...subs].sort((a,b)=>b.end.localeCompare(a.end))[0]);if(sid&&!act.length)return null;return {c,s:s||null,key:c.id,info:s?`${svc(s.serviceId).name} · ${whenTxt(s.end)}`:t('inactive')}}).filter(Boolean).sort((a,b)=>a.c.name.localeCompare(b.c.name))}
-  const chips=[['all',t('allCust')],...S.services.map(x=>['svc:'+x.id,x.name]),['in3',t('in3')],['in7',t('in7')],['exp',t('expiredF')],['debt',t('debtors')]];
+  const chips=[...(mode.startsWith('acc:')&&acc(mode.slice(4))?[[mode,'👥 '+acc(mode.slice(4)).label]]:[]),['all',t('allCust')],...S.services.map(x=>['svc:'+x.id,x.name]),['in3',t('in3')],['in7',t('in7')],['exp',t('expiredF')],['debt',t('debtors')]];
   openSheet(`<h2>${TPL_EM[tp.cat]||'💬'} ${esc(tplName(tp))}</h2>
    <div class="f"><label>${t('chooseMsg')}</label><select id="sdTpl">${S.templates.map(x=>`<option value="${x.id}" ${x.id===tp.id?'selected':''}>${TPL_EM[x.cat]||'💬'} ${esc(tplName(x))}</option>`).join('')}</select></div>
    <label style="display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px">${t('recipients')} (${rows.length})</label>
@@ -1298,6 +1363,7 @@ function applyChrome(){
   document.title=t('appName');
 }
 function render(anim){
+  document.getElementById('fab').classList.toggle('hidden',UI.tab==='home');
   const n=alerts().length;
   document.getElementById('bellBtn').innerHTML=I('bell')+(n?`<span class="badge">${n}</span>`:'');
   document.getElementById('hello').textContent=UI.tab==='home'?t('hello'):t('appName');
