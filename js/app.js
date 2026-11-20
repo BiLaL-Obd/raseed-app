@@ -2446,6 +2446,7 @@ function openSettings() {
         ).replace("<select", '<select id="alSel"')}
    <div class="btns"><button class="btn ghost" id="chPin">${I("key")} ${t("changePin")}</button><button class="btn ghost" id="chQ">${I("lock")} ${t("changeQ")}</button></div>
    <button class="tog" id="bioTg" style="width:100%;margin:10px 0 8px"><span>${I("finger", 'width=18 height=18 style="vertical-align:-4px"')} ${t("bio")}</span><span class="sw ${S.security.bio ? "on" : ""}"></span></button>
+   ${S.security.bio && bioPlugin() ? `<button class="tog" id="dcTg" style="width:100%;margin:0 0 8px"><span>${I("key", 'width=18 height=18 style="vertical-align:-4px"')} ${t("devCred")}</span><span class="sw ${S.security.devCred ? "on" : ""}"></span></button>` : ""}
    <div class="btns" style="margin-top:8px"><button class="btn ghost" id="newRc">${I("renew")} ${t("newCode")}</button><button class="btn danger" id="offLock" style="margin-top:6px">${t("disableLock")}</button></div>`
       : `<button class="btn" id="onLock">${I("lock")} ${t("enableLock")}</button>`
   }
@@ -2455,7 +2456,7 @@ function openSettings() {
   <div class="btns"><button class="btn ghost" id="expB">${I("up")} ${t("export")}</button><button class="btn ghost" id="impB">${I("down")} ${t("import")}</button></div>
   <button class="btn ghost" id="clnB" style="margin-top:10px">${I("trash")} ${t("cleanup")}</button>
   <button class="btn danger" id="rstB" style="margin-top:10px">${I("trash")} ${t("reset")}</button>
-  <div style="text-align:center;color:var(--muted);font-size:12px;margin-top:14px">Raseed · by Digital TopUP · ${t("version")} 5.3</div>`,
+  <div style="text-align:center;color:var(--muted);font-size:12px;margin-top:14px">Raseed · by Digital TopUP · ${t("version")} 5.4</div>`,
     null,
   );
   const sb = document.getElementById("pgBody");
@@ -2541,6 +2542,7 @@ function openSettings() {
         openSettings();
       }, openSettings);
   if ($("bioTg")) $("bioTg").onclick = toggleBio;
+  if ($("dcTg")) $("dcTg").onclick = toggleDevCred;
   if ($("alSel"))
     $("alSel").onchange = (e) => {
       e.stopPropagation();
@@ -2905,7 +2907,7 @@ function pinPad({
   };
   if (bio && startBio) {
     bioView();
-    setTimeout(bioUnlock, 350);
+    if (bioPlugin()) setTimeout(bioUnlock, 350);
   } else pinView();
 }
 function hideLock() {
@@ -2916,7 +2918,7 @@ function hideLock() {
 function showLock() {
   if (!S.security.enabled || locked) return;
   locked = true;
-  const hasBio = !!(S.security.bio && bioPlugin());
+  const hasBio = bioReady();
   pinPad({
     title: t("enterPin"),
     mode: "auto",
@@ -3150,23 +3152,73 @@ document.addEventListener("visibilitychange", () => (document.hidden ? onHide() 
 })();
 
 /* ============ BIOMETRIC ============ */
+// Android (APK): native plugin — weak class = fingerprint OR face, optional phone PIN fallback.
+// iPhone / browser: WebAuthn platform passkey (Face ID / Touch ID / Windows Hello).
 const bioPlugin = () => {
   const C = Cap();
   return C && C.BiometricAuthNative ? C.BiometricAuthNative : null;
 };
+const b64 = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const rndB = (n) => crypto.getRandomValues(new Uint8Array(n));
+async function waAvailable() {
+  try {
+    return !!(
+      window.PublicKeyCredential &&
+      window.isSecureContext &&
+      (await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())
+    );
+  } catch (e) {
+    return false;
+  }
+}
+async function waCreate() {
+  const cred = await navigator.credentials.create({
+    publicKey: {
+      challenge: rndB(32),
+      rp: { name: "Raseed" },
+      user: { id: rndB(16), name: "raseed", displayName: "Raseed" },
+      pubKeyCredParams: [
+        { type: "public-key", alg: -7 },
+        { type: "public-key", alg: -257 },
+      ],
+      authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+      timeout: 60000,
+      attestation: "none",
+    },
+  });
+  return cred ? b64(cred.rawId) : null;
+}
+async function waGet() {
+  const r = await navigator.credentials.get({
+    publicKey: {
+      challenge: rndB(32),
+      allowCredentials: [
+        { type: "public-key", id: unb64(S.security.wa), transports: ["internal", "hybrid"] },
+      ],
+      userVerification: "required",
+      timeout: 60000,
+    },
+  });
+  return !!r;
+}
+const bioReady = () => !!(S.security.bio && (bioPlugin() || (S.security.wa && window.PublicKeyCredential)));
 async function bioAuth() {
   const B = bioPlugin();
-  if (!B) return false;
+  if (!B && !(S.security.wa && window.PublicKeyCredential)) return false;
   bioBusy = true;
   try {
-    await B.internalAuthenticate({
-      reason: t("bioReason"),
-      androidTitle: "Raseed",
-      androidSubtitle: t("bioReason"),
-      cancelTitle: t("usePin"),
-      allowDeviceCredential: false,
-      androidConfirmationRequired: false,
-    });
+    if (B)
+      await B.internalAuthenticate({
+        reason: t("bioReason"),
+        androidTitle: "Raseed",
+        androidSubtitle: t("bioReason"),
+        cancelTitle: t("usePin"),
+        allowDeviceCredential: !!S.security.devCred,
+        androidBiometryStrength: 0,
+        androidConfirmationRequired: false,
+      });
+    else if (!(await waGet())) return false;
     return true;
   } catch (e) {
     return false;
@@ -3193,26 +3245,47 @@ async function toggleBio() {
     return;
   }
   const B = bioPlugin();
-  if (!B) {
-    toast(t("bioNA"));
-    return;
-  }
-  try {
-    const r = await B.checkBiometry();
-    if (!r || !r.isAvailable) {
+  if (B) {
+    try {
+      const r = await B.checkBiometry();
+      if (!r || (!r.isAvailable && !(S.security.devCred && r.deviceIsSecure))) {
+        toast(t("bioNA"));
+        return;
+      }
+    } catch (e) {
       toast(t("bioNA"));
       return;
     }
-  } catch (e) {
-    toast(t("bioNA"));
-    return;
+    if (!(await bioAuth())) return;
+  } else {
+    if (!(await waAvailable())) {
+      toast(t("bioNA"));
+      return;
+    }
+    bioBusy = true;
+    try {
+      const id = await waCreate();
+      if (!id) return;
+      S.security.wa = id;
+    } catch (e) {
+      toast(t("bioFail"));
+      return;
+    } finally {
+      setTimeout(() => {
+        bioBusy = false;
+        hiddenAt = 0;
+      }, 1500);
+    }
   }
-  if (await bioAuth()) {
-    S.security.bio = true;
-    save();
-    toast(t("bioOn"));
-    openSettings();
-  }
+  S.security.bio = true;
+  save();
+  toast(t("bioOn"));
+  openSettings();
+}
+function toggleDevCred() {
+  S.security.devCred = !S.security.devCred;
+  save();
+  openSettings();
 }
 
 /* ============ AUTO BACKUP ============ */
