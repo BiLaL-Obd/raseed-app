@@ -1,7 +1,7 @@
 // Raseed offline service worker
-const CACHE = 'raseed-v4.2';
+const CACHE = 'raseed-v5.2';
 const FILES = [
-  './', './index.html', './manifest.webmanifest', './fonts/fonts.css',
+  './', './index.html', './css/app.css', './js/i18n.js', './js/app.js', './manifest.webmanifest', './fonts/fonts.css',
   './fonts/cairo-arabic-400-normal.woff2', './fonts/cairo-arabic-600-normal.woff2', './fonts/cairo-arabic-700-normal.woff2', './fonts/cairo-arabic-800-normal.woff2',
   './fonts/cairo-latin-400-normal.woff2', './fonts/cairo-latin-600-normal.woff2', './fonts/cairo-latin-700-normal.woff2', './fonts/cairo-latin-800-normal.woff2',
   './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/favicon-32.png'
