@@ -229,9 +229,43 @@ const esc = (s) =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
   );
 const num = (v) => {
-  const n = parseFloat(String(v).replace(",", "."));
+  let str = String(v ?? "").trim();
+  // "1,234,567.5" -> thousands separators; "2,5" -> decimal comma
+  str = /^-?\d{1,3}(,\d{3})+(\.\d*)?$/.test(str) ? str.replace(/,/g, "") : str.replace(",", ".");
+  const n = parseFloat(str);
   return isFinite(n) ? n : 0;
 };
+// Format what the user types in a number field: 1234567.5 -> 1,234,567.5
+function fmtNumStr(v) {
+  let str = String(v ?? "").replace(/[^\d.\-]/g, "");
+  if (!str) return "";
+  const neg = str.startsWith("-") ? "-" : "";
+  str = str.replace(/-/g, "");
+  const dot = str.indexOf(".");
+  let int = dot >= 0 ? str.slice(0, dot) : str;
+  const dec = dot >= 0 ? "." + str.slice(dot + 1).replace(/\./g, "") : "";
+  int = int.replace(/^0+(?=\d)/, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return neg + int + dec;
+}
+// Live formatting for every number field, keeping the cursor after the same digit
+document.addEventListener(
+  "input",
+  (e) => {
+    const el = e.target;
+    if (!el.matches || !el.matches("input[data-num]")) return;
+    const caret = el.selectionStart ?? el.value.length;
+    const digitsBefore = el.value.slice(0, caret).replace(/[^\d.]/g, "").length;
+    const out = fmtNumStr(el.value);
+    if (out === el.value) return;
+    el.value = out;
+    let pos = 0;
+    for (let seen = 0; pos < out.length && seen < digitsBefore; pos++) if (/[\d.]/.test(out[pos])) seen++;
+    try {
+      el.setSelectionRange(pos, pos);
+    } catch (err) {}
+  },
+  true,
+); // capture phase: format before form listeners read the value
 function money(n) {
   n = Math.round(num(n) * 100) / 100;
   const c = S.settings.currency || "$";
@@ -670,7 +704,7 @@ function altCur() {
 function field(f, val) {
   if (f.money) {
     const a = altCur();
-    return `<div class="f" data-k="${f.k}"><label for="f_${f.k}">${esc(f.label)}${f.req ? " *" : ""}</label><div class="money-in"><input id="f_${f.k}" name="${f.k}" type="number" inputmode="decimal" step="any" value="${esc(val)}"><select name="${f.k}__cur" data-cur="${f.k}"><option value="main">${esc(a.main)}</option><option value="alt">${esc(a.sym)}</option></select></div><div class="conv" data-conv="${f.k}"></div></div>`;
+    return `<div class="f" data-k="${f.k}"><label for="f_${f.k}">${esc(f.label)}${f.req ? " *" : ""}</label><div class="money-in"><input id="f_${f.k}" name="${f.k}" type="text" inputmode="decimal" autocomplete="off" data-num value="${esc(fmtNumStr(val))}"><select name="${f.k}__cur" data-cur="${f.k}"><option value="main">${esc(a.main)}</option><option value="alt">${esc(a.sym)}</option></select></div><div class="conv" data-conv="${f.k}"></div></div>`;
   }
   const id = "f_" + f.k;
   const lab = f.label ? `<label for="${id}">${esc(f.label)}${f.req ? " *" : ""}</label>` : "";
@@ -682,7 +716,7 @@ function field(f, val) {
     return `<div class="f" data-k="${f.k}"><button type="button" class="tog" data-tog="${f.k}" style="width:100%"><span>${esc(f.label)}</span><span class="sw ${val ? "on" : ""}"></span></button><input type="hidden" name="${f.k}" value="${val ? 1 : ""}"></div>`;
   if (f.type === "color")
     return `<div class="f" data-k="${f.k}">${lab}<div class="colors">${COLORS.map((c) => `<button type="button" data-col="${c}" class="${c === val ? "on" : ""}" style="background:${c}"></button>`).join("")}</div><input type="hidden" name="${f.k}" value="${esc(val || COLORS[0])}"></div>`;
-  return `<div class="f" data-k="${f.k}">${lab}<input id="${id}" name="${f.k}" type="${f.type || "text"}" ${f.type === "number" ? 'inputmode="decimal" step="any"' : ""} ${f.ph ? `placeholder="${esc(f.ph)}"` : ""} value="${esc(val)}"></div>`;
+  return `<div class="f" data-k="${f.k}">${lab}<input id="${id}" name="${f.k}" type="${f.type === "number" ? "text" : f.type || "text"}" ${f.type === "number" ? 'inputmode="decimal" autocomplete="off" data-num' : ""} ${f.ph ? `placeholder="${esc(f.ph)}"` : ""} value="${esc(f.type === "number" ? fmtNumStr(val) : val)}"></div>`;
 }
 function formHTML(fields, data) {
   let h = "";
@@ -729,6 +763,7 @@ function openForm({ title, fields, data = {}, onSubmit, onDelete, onDeleteClick,
   const AC = altCur();
   fields.forEach((f) => {
     f.money = !!(AC && f.type === "number" && MONEY_KEYS.includes(f.k));
+    if (f.money) f.half = false;
   });
   const fid = "frm" + ++FORMN;
   const inner = `${note ? `<div class="note">${note}</div>` : ""}<form id="${fid}" class="frm">${formHTML(fields, data)}<button class="btn" type="submit">${I("check")} ${t("save")}</button>${onDelete || onDeleteClick ? `<button class="btn danger" type="button" data-del>${I("trash")} ${t("delete")}</button>` : ""}</form>`;
@@ -770,7 +805,9 @@ function openForm({ title, fields, data = {}, onSubmit, onDelete, onDeleteClick,
     if (k) {
       const inp = frm.querySelector(`[name="${k}"]`);
       if (inp.value !== "") {
-        inp.value = e.target.value === "alt" ? AC.toAlt(num(inp.value)) : AC.toMain(num(inp.value));
+        inp.value = fmtNumStr(
+          e.target.value === "alt" ? AC.toAlt(num(inp.value)) : AC.toMain(num(inp.value)),
+        );
       }
       convUpd(k);
     }
@@ -2418,7 +2455,7 @@ function openSettings() {
   <div class="btns"><button class="btn ghost" id="expB">${I("up")} ${t("export")}</button><button class="btn ghost" id="impB">${I("down")} ${t("import")}</button></div>
   <button class="btn ghost" id="clnB" style="margin-top:10px">${I("trash")} ${t("cleanup")}</button>
   <button class="btn danger" id="rstB" style="margin-top:10px">${I("trash")} ${t("reset")}</button>
-  <div style="text-align:center;color:var(--muted);font-size:12px;margin-top:14px">Raseed · by Digital TopUP · ${t("version")} 5.2</div>`,
+  <div style="text-align:center;color:var(--muted);font-size:12px;margin-top:14px">Raseed · by Digital TopUP · ${t("version")} 5.3</div>`,
     null,
   );
   const sb = document.getElementById("pgBody");

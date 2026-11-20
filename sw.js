@@ -1,5 +1,5 @@
 // Raseed offline service worker
-const CACHE = 'raseed-v5.2';
+const CACHE = 'raseed-v5.3';
 const FILES = [
   './', './index.html', './css/app.css', './js/i18n.js', './js/app.js', './manifest.webmanifest', './fonts/fonts.css',
   './fonts/cairo-arabic-400-normal.woff2', './fonts/cairo-arabic-600-normal.woff2', './fonts/cairo-arabic-700-normal.woff2', './fonts/cairo-arabic-800-normal.woff2',
